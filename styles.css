@@ -54,10 +54,12 @@ button:hover {
   justify-content: flex-start;
 }
 
+/* Stilius pastaboms su geltonu fonu ir atlenktu kampu */
 .note-card {
-  background-color: #f9f9f9;
+  background-color: #f5e2a1; /* Geltona spalva */
+  color: black; /* Juodos spalvos tekstas */
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px; /* Apvalūs kampai */
   width: 200px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -68,22 +70,32 @@ button:hover {
   transform: scale(1.05);
 }
 
-.note-card.completed .note-description {
-  text-decoration: line-through; /* Užbraukia atliktas pastabas */
-  color: grey; /* Galite pridėti spalvą, kad būtų lengviau matyti atliktas pastabas */
-  background-color: #d3ffd3;
-  text-decoration: line-through;
+/* Lapelio efektas dešiniajame viršutiniame kampe */
+.note-card::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: #f5e2a1; /* Tas pats geltonas fonas */
+  border-top-right-radius: 10px;
+  transform: rotate(45deg); /* Sukame, kad sukurtume lapelio efektą */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-.completed .note-description {
+/* Pažymėta kaip atlikta pastaba (užbraukiamas tekstas ir keičiasi spalva) */
+.note-card.completed .note-description {
   text-decoration: line-through;
-  color: grey;
+  color: grey; /* Galite pridėti spalvą, kad būtų lengviau matyti atliktas pastabas */
+  background-color: #d3ffd3;
 }
 
 .note-description {
   cursor: pointer;
 }
 
+/* Mygtukų stilius pastaboje */
 .note-actions {
   position: absolute;
   top: 10px;
@@ -93,10 +105,17 @@ button:hover {
 }
 
 .note-actions button {
-  color: #333;
-  background-color: transparent;
+  color: black;
+  background-color: transparent; /* Juoda spalva mygtukams */
   border: none;
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.note-actions button:hover {
+  background-color: #444; /* Tamsesnė spalva pelės perėjimui */
 }
 
 /* Responsiveness for mobile */

@@ -22,6 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Funkcija, kuri įkraus pastabas į puslapį
   function loadNotes() {
     const notes = getNotesFromLocalStorage();
+
+    // Rūšiuojame pastabas pagal kūrimo laiką (naujausia - viršuje)
+    notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
     notesContainer.innerHTML = ""; // Išvalome esamus pastabas
     notes.forEach((note) => {
       createNoteElement(note);
@@ -128,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
       title,
       description,
       completed: false,
+      createdAt: new Date().toISOString(), // Pridedame kūrimo laiką
     };
 
     notes.push(newNote);
