@@ -1,4 +1,119 @@
-* {
+/* Base styles */
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+input,
+textarea {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.notes-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.note-card {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.note-card:hover {
+  transform: scale(1.05);
+}
+
+.note-card.completed .note-description {
+  text-decoration: line-through; /* Užbraukia atliktas pastabas */
+  color: grey; /* Galite pridėti spalvą, kad būtų lengviau matyti atliktas pastabas */
+
+  background-color: #d3ffd3;
+  text-decoration: line-through;
+}
+
+.note-description {
+  cursor: pointer;
+}
+
+.note-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.note-actions button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsiveness for mobile */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .notes-container {
+    justify-content: center;
+  }
+
+  .note-card {
+    width: 150px;
+    padding: 15px;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+  }
 }
