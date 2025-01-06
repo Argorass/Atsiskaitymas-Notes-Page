@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Notes App</title>
     <link rel="stylesheet" href="styles.css" />
     <script defer src="main.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <h1>Notes App</h1>
+      <form id="note-form">
+        <input type="text" id="note-title" placeholder="Pavadinimas" required />
+        <textarea
+          id="note-description"
+          placeholder="Aprašymas"
+          required
+        ></textarea>
+        <button type="submit">Sukurti Note</button>
+      </form>
+      <div id="notes-container" class="notes-container">
+        <!-- Čia bus rodomos sukurti pastabos -->
+      </div>
+    </div>
+  </body>
 </html>
