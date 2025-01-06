@@ -1,70 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const noteForm = document.querySelector("#note-form");
-  const noteTitleInput = document.querySelector("#note-title");
-  const noteDescriptionInput = document.querySelector("#note-description");
-  const notesContainer = document.querySelector("#notes-container");
+  const noteForm = document.querySelector("#note-form"),
+    noteTitleInput = document.querySelector("#note-title"),
+    noteDescriptionInput = document.querySelector("#note-description"),
+    notesContainer = document.querySelector("#notes-container");
 
-  // Funkcija, kuri nuskaitys pastabas iš LocalStorage
-  function getNotesFromLocalStorage() {
+  const getNotesFromLocalStorage = () => {
     const notesData = localStorage.getItem("notes");
-    console.log("Įkeliami pastabos iš LocalStorage:", notesData);
-    if (!notesData) {
-      return [];
-    }
     try {
-      return JSON.parse(notesData);
+      console.log("Įkeliami pastabos iš LocalStorage:", notesData);
+      return notesData ? JSON.parse(notesData) : [];
     } catch (e) {
       console.error("Klaida įkeliant pastabas:", e);
       return [];
     }
-  }
+  };
 
-  // Funkcija, kuri įkraus pastabas į puslapį
-  function loadNotes() {
-    const notes = getNotesFromLocalStorage();
-
-    // Rūšiuojame pastabas pagal kūrimo laiką (naujausia - viršuje)
-    notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-    notesContainer.innerHTML = ""; // Išvalome esamus pastabas
-    notes.forEach((note) => {
-      createNoteElement(note);
-    });
-  }
-
-  // Funkcija, kuri atnaujins LocalStorage su visomis pastabomis
-  function updateLocalStorage(notes) {
-    console.log("Atnaujinamos pastabos LocalStorage:", notes);
+  const updateLocalStorage = (notes) => {
     try {
+      console.log("Atnaujinamos pastabos LocalStorage:", notes);
       localStorage.setItem("notes", JSON.stringify(notes));
     } catch (e) {
       console.error("Klaida saugojant pastabas:", e);
     }
-  }
+  };
 
-  // Funkcija, kuri sukuria pastabą DOM'e
-  function createNoteElement(note) {
+  const loadNotes = () => {
+    const notes = getNotesFromLocalStorage().sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    notesContainer.innerHTML = "";
+    notes.forEach(createNoteElement);
+  };
+
+  const createNoteElement = (note) => {
     const noteCard = document.createElement("div");
-    noteCard.classList.add("note-card");
-    if (note.completed) {
-      noteCard.classList.add("completed"); // Jei pastaba atlikta, pridedame "completed" klasę
-    }
-
+    noteCard.classList.add("note-card", note.completed && "completed");
     noteCard.innerHTML = `
-            <h3 class="note-title">${note.title}</h3>
-            <p class="note-description">${note.description}</p>
-            <div class="note-actions">
-                <button class="complete-btn">✓</button>
-                <button class="delete-btn">🗑️</button>
-            </div>
-        `;
+        <h3 class="note-title">${note.title}</h3>
+        <p class="note-description">${note.description}</p>
+        <div class="note-actions">
+          <button class="complete-btn">✓</button>
+          <button class="delete-btn">🗑️</button>
+        </div>`;
 
-    // Susiejame mygtukus su funkcijomis
-    const completeBtn = noteCard.querySelector(".complete-btn");
-    const deleteBtn = noteCard.querySelector(".delete-btn");
-    const noteDescription = noteCard.querySelector(".note-description");
+    const completeBtn = noteCard.querySelector(".complete-btn"),
+      deleteBtn = noteCard.querySelector(".delete-btn"),
+      noteDescription = noteCard.querySelector(".note-description");
 
-    // Patikriname, ar mygtukai yra teisingai pasirinkti
     console.log(
       "Pridėjome mygtukus į pastabą:",
       completeBtn,
@@ -72,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
       noteDescription
     );
 
-    // Pritvirtiname įvykių klausytuvus
     completeBtn.addEventListener("click", () => {
       console.log("Paspausta ant ✓ mygtuko");
       toggleNoteCompletion(note);
@@ -87,68 +68,53 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     notesContainer.appendChild(noteCard);
-  }
+  };
 
-  // Funkcija, kuri pažymi pastabą kaip atliktą arba ne
-  function toggleNoteCompletion(note) {
+  const toggleNoteCompletion = (note) => {
     console.log("Pastaba pažymėta kaip atlikta:", note);
-    const notes = getNotesFromLocalStorage();
-    const updatedNotes = notes.map((n) => {
-      if (n.title === note.title && n.description === note.description) {
-        n.completed = !n.completed; // Pažymime kaip atliktą arba ne
-      }
-      return n;
-    });
+    const notes = getNotesFromLocalStorage().map((n) =>
+      n.title === note.title && n.description === note.description
+        ? { ...n, completed: !n.completed }
+        : n
+    );
+    updateLocalStorage(notes);
+    loadNotes();
+  };
 
-    updateLocalStorage(updatedNotes);
-    loadNotes(); // Atnaujiname rodomas pastabas
-  }
-
-  // Funkcija, kuri ištrina pastabą
-  function deleteNote(note) {
+  const deleteNote = (note) => {
     console.log("Ištrinamos pastaba:", note);
-    const notes = getNotesFromLocalStorage();
-    const filteredNotes = notes.filter(
+    const filteredNotes = getNotesFromLocalStorage().filter(
       (n) => n.title !== note.title || n.description !== note.description
     );
     updateLocalStorage(filteredNotes);
     loadNotes();
-  }
+  };
 
-  // Funkcija, kuri išsaugo naują pastabą
-  function saveNote() {
-    const title = noteTitleInput.value;
-    const description = noteDescriptionInput.value;
-
-    // Patikrinimas, ar yra užpildyti visi laukeliai
-    if (!title || !description) {
-      alert("Prašome užpildyti visus laukus");
-      return;
-    }
+  const saveNote = () => {
+    const title = noteTitleInput.value,
+      description = noteDescriptionInput.value;
+    if (!title || !description) return alert("Prašome užpildyti visus laukus");
 
     const notes = getNotesFromLocalStorage();
-
     const newNote = {
       title,
       description,
       completed: false,
-      createdAt: new Date().toISOString(), // Pridedame kūrimo laiką
+      createdAt: new Date().toISOString(),
     };
 
+    console.log("Pridedama nauja pastaba:", newNote);
     notes.push(newNote);
     updateLocalStorage(notes);
 
-    noteTitleInput.value = ""; // Išvalome formos laukus
-    noteDescriptionInput.value = "";
-    loadNotes(); // Atnaujiname rodomas pastabas
-  }
+    noteTitleInput.value = noteDescriptionInput.value = "";
+    loadNotes();
+  };
 
-  // Formos pateikimo klausytuvo funkcija
   noteForm.addEventListener("submit", (e) => {
     e.preventDefault();
     saveNote();
   });
 
-  // Puslapio užkrovimas ir pastabų atvaizdavimas
   loadNotes();
 });
