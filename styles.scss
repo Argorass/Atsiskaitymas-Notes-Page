@@ -70,9 +70,13 @@ button:hover {
 .note-card.completed .note-description {
   text-decoration: line-through; /* Užbraukia atliktas pastabas */
   color: grey; /* Galite pridėti spalvą, kad būtų lengviau matyti atliktas pastabas */
-
   background-color: #d3ffd3;
   text-decoration: line-through;
+}
+
+.completed .note-description {
+  text-decoration: line-through;
+  color: grey;
 }
 
 .note-description {
@@ -88,6 +92,7 @@ button:hover {
 }
 
 .note-actions button {
+  color: #333;
   background-color: transparent;
   border: none;
   cursor: pointer;

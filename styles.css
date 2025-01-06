@@ -75,6 +75,11 @@ button:hover {
   text-decoration: line-through;
 }
 
+.completed .note-description {
+  text-decoration: line-through;
+  color: grey;
+}
+
 .note-description {
   cursor: pointer;
 }
@@ -88,6 +93,7 @@ button:hover {
 }
 
 .note-actions button {
+  color: #333;
   background-color: transparent;
   border: none;
   cursor: pointer;
